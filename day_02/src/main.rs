@@ -29,6 +29,9 @@ fn part01(input: &str) -> Result<String, String> {
     for line in input.lines() {
         // we initialize this here to start with no max values
         let mut max_values =  HashMap::new();
+        max_values.insert("red", 0);
+        max_values.insert("green", 0);
+        max_values.insert("blue", 0);
 
         // separate line into lhs (game and number) and rest of line
         let colon_split: Vec<&str> = line
@@ -60,14 +63,11 @@ fn part01(input: &str) -> Result<String, String> {
                         .entry(color)
                         // if occupied, replace it with the greater of the preexisting number or
                         // the new number.
-                        .and_modify(|e| *e = i32::max(*e, number))
-                        // if empty, insert the number (creating a color number pair)
-                        .or_insert(number);
+                        .and_modify(|e| *e = i32::max(*e, number));
                 }
             }
         }
-
-        if (max_values["red"] < red_limit) & (max_values["green"] < green_limit) & (max_values["blue"] < blue_limit) {
+        if (max_values["red"] <= red_limit) && (max_values["green"] <= green_limit) && (max_values["blue"] <= blue_limit) {
             sum += game_num.parse::<i32>().unwrap();
         }
     }
