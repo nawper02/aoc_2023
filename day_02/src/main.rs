@@ -12,11 +12,11 @@ fn main() {
         Err(e) => println!("Part 01 Error: {}", e),
     }
 
-    //let result02 = part02(input);
-    //match result02{
-    //    Ok(value) => println!("Part 02 answer is: {}", value),
-    //    Err(e) => println!("Part 02 Error: {}", e),
-    //}
+    let result02 = part02(input);
+    match result02{
+        Ok(value) => println!("Part 02 answer is: {}", value),
+        Err(e) => println!("Part 02 Error: {}", e),
+    }
 }
 
 fn part01(input: &str) -> Result<String, String> {
@@ -75,7 +75,51 @@ fn part01(input: &str) -> Result<String, String> {
 }
 
 fn part02(input: &str) -> Result<String, String> {
-    todo!()
+    let mut sum: i32 = 0;
+
+    // loop over lines of input
+    for line in input.lines() {
+        // we initialize this here to start with no max values
+        let mut max_values =  HashMap::new();
+        max_values.insert("red", 0);
+        max_values.insert("green", 0);
+        max_values.insert("blue", 0);
+
+        // get the quantity color pairs
+        let parts: Vec<&str> = line
+            // split on semicolon
+            .split_once(':')
+            // take the right half of the string
+            .unwrap().1
+            // split on commas or semicolons
+            .split(|c| c == ',' || c == ';')
+            // trim the parts
+            .map(|s| s.trim())
+            // remove any empty ones
+            .filter(|s| !s.is_empty())
+            // combine into a vector of parts (each part is like "4 blue")
+            .collect();
+
+        // part: "4 blue"
+        for part in parts {
+            // for each pair, split into number and key.
+            let mut split = part.split_whitespace();
+            // if we can split each part into two strings,
+            if let (Some(number_str), Some(color)) = (split.next(), split.next()) {
+                // and if we can convert the number string into an integer,
+                if let Ok(number) = number_str.parse::<i32>() {
+                    max_values
+                        // returns an entry that is either vacant or occupied
+                        .entry(color)
+                        // if occupied, replace it with the greater of the preexisting number or
+                        // the new number.
+                        .and_modify(|e| *e = i32::max(*e, number));
+                }
+            }
+        }
+        sum += max_values.values().product::<i32>();
+    }
+    Ok(sum.to_string())
 }
 
 fn part01_first_attempt(input: &str) -> Result<String, String> {
@@ -118,9 +162,6 @@ fn part01_first_attempt(input: &str) -> Result<String, String> {
             }
             (max_values["red"] < red_limit) & (max_values["green"] < green_limit) & (max_values["blue"] < blue_limit)
         };
-
-
-
         if possible {
             sum += game_num.parse::<i32>().unwrap();
         }
@@ -133,7 +174,7 @@ mod tests {
     use super::*;
     #[test]
     fn part01_works() {
-        assert_eq!("88", part01(include_str!("example_input.txt")).unwrap());
+        assert_eq!("8", part01(include_str!("example_input.txt")).unwrap());
     }
 
     #[test]
