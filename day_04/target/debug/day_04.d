@@ -1,0 +1,1 @@
+/Users/kinblandford/RustroverProjects/aoc_2023/day_04/target/debug/day_04: /Users/kinblandford/RustroverProjects/aoc_2023/day_04/src/input.txt /Users/kinblandford/RustroverProjects/aoc_2023/day_04/src/main.rs

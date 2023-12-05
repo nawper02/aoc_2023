@@ -1,0 +1,22 @@
+# Compiled files
+/target/
+
+# Rust artifacts
+**/*.rs.bk
+
+# Cargo lock file (uncomment if you don't wish to include this in your repository)
+#Cargo.lock
+
+# Ignore .txt files
+*.txt
+
+# Ignore editor and IDE files
+**/*.swp
+**/*.swo
+.idea/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
