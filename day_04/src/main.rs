@@ -1,4 +1,4 @@
-// day xx
+// day 04
 
 
 fn main() {
